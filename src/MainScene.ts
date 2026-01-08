@@ -72,9 +72,8 @@ export class MainScene extends Phaser.Scene {
       callback: this.spawnPipes,
       callbackScope: this,
     })
-    // this.spawnPipes()
 
-     this.chickenJoe = new Joe(this, 100, GAME_HEIGHT / 2)
+     this.chickenJoe = new Joe(this, 150, GAME_HEIGHT / 2)
 
     this.chickenJoe.play('Joe-animation')
 
