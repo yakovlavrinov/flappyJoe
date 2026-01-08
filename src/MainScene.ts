@@ -82,6 +82,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number) {
+    this.chickenJoe.update()
     this.oceanTime += delta * 0.05
     this.drawOcean()
   }

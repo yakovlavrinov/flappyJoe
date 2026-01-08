@@ -18,6 +18,15 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true)
   }
 
+  update() {
+    const body = this.body as Phaser.Physics.Arcade.Body
+    if (body.velocity.y > 300) {
+      this.angle = this.angle + 1
+    } else {
+      this.angle = 30
+    }
+  }
+
   flap() {
     this.setVelocityY(-300)
   }
