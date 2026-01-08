@@ -1,14 +1,16 @@
-import Phaser from 'phaser';
-import { MainScene } from './MainScene';
+import Phaser from 'phaser'
+import { MainScene } from './MainScene'
 
-export const GAME_WIDTH = 400;
-export const GAME_HEIGHT = 600;
+export const GAME_WIDTH = 400
+export const GAME_HEIGHT = 600
+
+export const GRAVITY_X = 0
+export const GRAVITY_Y = 800
 
 export const gameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: GAME_WIDTH,
   height: GAME_HEIGHT,
-  parent: 'app',
 
   scale: {
     mode: Phaser.Scale.FIT,
@@ -17,9 +19,9 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { x: 0, y: 800 },
+      gravity: { x: GRAVITY_X, y: GRAVITY_Y },
       debug: false,
     },
   },
   scene: [MainScene],
-};
+}
