@@ -96,3 +96,5 @@ export class MainScene extends Phaser.Scene {
     this.scene.restart()
   }
 }
+
+// настроить PWA
