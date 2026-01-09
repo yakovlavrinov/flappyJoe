@@ -7,7 +7,7 @@ export class Surfboard extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this)
     scene.physics.add.existing(this)
 
-    const body = this.body as Phaser.Physics.Arcade.Body
+    const body = this.body as Phaser.Physics.Arcade.Body // проверка наличия или другой подход
     body.setAllowGravity(false)
     body.setImmovable(true)
     body.setSize(40, 350)
@@ -24,3 +24,5 @@ export class Surfboard extends Phaser.Physics.Arcade.Sprite {
     }
   }
 }
+
+// Вынести константы 
