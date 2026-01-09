@@ -52,3 +52,5 @@ export class CloudManager {
     this.clouds.clear(true, true)
   }
 }
+
+// вынести облака в отдельный класс

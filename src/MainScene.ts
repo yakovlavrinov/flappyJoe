@@ -35,18 +35,17 @@ export class MainScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor('#87CEEB')
 
-    this.cloudManager = new CloudManager(this)
-    this.cloudManager.spawnInitial(5)
-
-    this.water = new Water(this)
-
-
     this.anims.create({
       key: 'Joe-animation',
       frames: [{ key: 'Joe1' }, { key: 'Joe2' }, { key: 'Joe3' }, { key: 'Joe4' }],
       frameRate: 10,
       repeat: -1,
     })
+
+    this.cloudManager = new CloudManager(this)
+    this.cloudManager.spawnInitial(5)
+
+    this.water = new Water(this)
 
     this.surfboards = this.physics.add.group({
       classType: Surfboard,
@@ -78,7 +77,7 @@ export class MainScene extends Phaser.Scene {
     this.water.update(delta)
   }
 
-  private spawnSurfboard() {
+  private spawnSurfboard() { // вынести в отдельный класс по управлению досками
     const gap = 115
     const plus = Phaser.Math.Between(-100, 100)
 
