@@ -3,14 +3,13 @@ import { GAME_HEIGHT, GAME_WIDTH } from './config'
 import { Joe } from './Joe'
 import { Surfboard } from './Surfboard'
 import { CloudManager } from './CloudManager'
+import { Water } from './Water'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
   private surfboards!: Phaser.Physics.Arcade.Group
   private cloudManager!: CloudManager
-  private ocean!: Phaser.GameObjects.Graphics
-
-  private oceanTime = 0
+  private water!: Water
 
   constructor() {
     super('MainScene')
@@ -36,13 +35,11 @@ export class MainScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor('#87CEEB')
 
-    this.ocean = this.add.graphics()
-    this.ocean.setDepth(3)
-
-    this.ocean.fillGradientStyle(0x1e90ff, 0x1e90ff, 0x0b3d91, 0x0b3d91, 1)
-
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
+
+    this.water = new Water(this)
+
 
     this.anims.create({
       key: 'Joe-animation',
@@ -78,8 +75,7 @@ export class MainScene extends Phaser.Scene {
 
   update(_time: number, delta: number) {
     this.chickenJoe.update(delta)
-    this.oceanTime += delta * 0.05
-    this.drawOcean()
+    this.water.update(delta)
   }
 
   private spawnSurfboard() {
@@ -95,32 +91,6 @@ export class MainScene extends Phaser.Scene {
 
     topSurfboard.setVelocityX(-200)
     bottomSurfboard.setVelocityX(-200)
-  }
-
-  private drawOcean() {
-    const baseY = GAME_HEIGHT - 80
-    const amplitude = 6
-    const wavelength = 80
-    const step = 12
-
-    this.ocean.clear()
-
-    this.ocean.fillStyle(0x1e90ff, 1)
-    this.ocean.beginPath()
-
-    // старт снизу слева
-    this.ocean.moveTo(0, GAME_HEIGHT)
-
-    for (let x = 0; x <= GAME_WIDTH; x += step) {
-      const y = baseY + Math.sin((x + this.oceanTime) / wavelength) * amplitude
-
-      this.ocean.lineTo(x, y)
-    }
-
-    // закрываем форму
-    this.ocean.lineTo(GAME_WIDTH, GAME_HEIGHT)
-    this.ocean.closePath()
-    this.ocean.fillPath()
   }
 
   private gameOver() {
