@@ -80,8 +80,8 @@ export class MainScene extends Phaser.Scene {
     this.physics.add.collider(this.chickenJoe, this.pipes, this.gameOver, undefined, this)
   }
 
-  update(time: number, delta: number) {
-    this.chickenJoe.update()
+  update(_time: number, delta: number) {
+    this.chickenJoe.update(delta)
     this.oceanTime += delta * 0.05
     this.drawOcean()
   }

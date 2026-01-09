@@ -7,7 +7,7 @@ const BODY_OFFSET_X = 60
 const BODY_OFFSET_Y = 35
 const ANGLE_INIT = 30
 const FALL_VELOCITY = 300
-const ROTATION_SPEED = 1.3
+const ROTATION_SPEED = 100
 const FLAP_VELOCITY = -300
 
 export class Joe extends Phaser.Physics.Arcade.Sprite {
@@ -30,13 +30,16 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true)
   }
 
-  update() {
+  update(delta: number) {
+    const deltaSeconds = delta / 1000
     if (!this.body) return
 
     if (this.body.velocity.y > FALL_VELOCITY) {
-      this.angle = this.angle + ROTATION_SPEED
+      this.angle = this.angle + ROTATION_SPEED * deltaSeconds
     } else {
-      this.angle = ANGLE_INIT
+      if (this.angle > ANGLE_INIT) {
+        this.angle = this.angle - ROTATION_SPEED * deltaSeconds
+      }
     }
   }
 
