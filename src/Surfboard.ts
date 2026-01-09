@@ -1,8 +1,8 @@
 import Phaser from 'phaser'
 
-export class Pipe extends Phaser.Physics.Arcade.Sprite {
+export class Surfboard extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number, flipped = false) {
-    super(scene, x, y, 'pipe')
+    super(scene, x, y, 'surfboard')
 
     scene.add.existing(this)
     scene.physics.add.existing(this)

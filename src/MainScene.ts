@@ -1,14 +1,14 @@
 import Phaser from 'phaser'
 import { GAME_HEIGHT, GAME_WIDTH } from './config'
 import { Joe } from './Joe'
-import { Pipe } from './Surfboard'
+import { Surfboard } from './Surfboard'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
-  private pipes!: Phaser.Physics.Arcade.Group
+  private surfboards!: Phaser.Physics.Arcade.Group
   private clouds!: Phaser.GameObjects.Group
-
   private ocean!: Phaser.GameObjects.Graphics
+
   private oceanTime = 0
 
   constructor() {
@@ -16,7 +16,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.svg('pipe', 'assets/surfboard.svg', {
+    this.load.svg('surfboard', 'assets/surfboard.svg', {
       width: 150,
       height: 350,
     })
@@ -55,8 +55,8 @@ export class MainScene extends Phaser.Scene {
 
    
 
-    this.pipes = this.physics.add.group({
-      classType: Pipe,
+    this.surfboards = this.physics.add.group({
+      classType: Surfboard,
       runChildUpdate: true,
       allowGravity: false,
       immovable: true,
@@ -69,7 +69,7 @@ export class MainScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 1500,
       loop: true,
-      callback: this.spawnPipes,
+      callback: this.spawnSurfboard,
       callbackScope: this,
     })
 
@@ -77,7 +77,7 @@ export class MainScene extends Phaser.Scene {
 
     this.chickenJoe.play('Joe-animation')
 
-    this.physics.add.collider(this.chickenJoe, this.pipes, this.gameOver, undefined, this)
+    this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
   }
 
   update(_time: number, delta: number) {
@@ -86,20 +86,20 @@ export class MainScene extends Phaser.Scene {
     this.drawOcean()
   }
 
-  private spawnPipes() {
+  private spawnSurfboard() {
     const gap = 115
     const plus = Phaser.Math.Between(-100, 100)
    
 
-    const topPipe = new Pipe(this, GAME_WIDTH, 100 - gap / 2 + plus, true)
+    const topSurfboard = new Surfboard(this, GAME_WIDTH, 100 - gap / 2 + plus, true)
 
-    const bottomPipe = new Pipe(this, GAME_WIDTH, 450 + gap / 2 + plus, false)
+    const bottomSurfboard = new Surfboard(this, GAME_WIDTH, 450 + gap / 2 + plus, false)
 
-    this.pipes.add(topPipe)
-    this.pipes.add(bottomPipe)
+    this.surfboards.add(topSurfboard)
+    this.surfboards.add(bottomSurfboard)
 
-    topPipe.setVelocityX(-200)
-    bottomPipe.setVelocityX(-200)
+    topSurfboard.setVelocityX(-200)
+    bottomSurfboard.setVelocityX(-200)
   }
 
   private spawnCloud(x: number, y: number) {
