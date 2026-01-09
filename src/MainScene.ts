@@ -2,11 +2,12 @@ import Phaser from 'phaser'
 import { GAME_HEIGHT, GAME_WIDTH } from './config'
 import { Joe } from './Joe'
 import { Surfboard } from './Surfboard'
+import { CloudManager } from './CloudManager'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
   private surfboards!: Phaser.Physics.Arcade.Group
-  private clouds!: Phaser.GameObjects.Group
+  private cloudManager!: CloudManager
   private ocean!: Phaser.GameObjects.Graphics
 
   private oceanTime = 0
@@ -24,7 +25,7 @@ export class MainScene extends Phaser.Scene {
     this.load.svg('Joe2', 'assets/Joe2.svg')
     this.load.svg('Joe3', 'assets/Joe3.svg')
     this.load.svg('Joe4', 'assets/Joe4.svg')
-    
+
     this.load.spritesheet('clouds', 'assets/clouds.png', {
       frameWidth: 128,
       frameHeight: 64,
@@ -40,11 +41,8 @@ export class MainScene extends Phaser.Scene {
 
     this.ocean.fillGradientStyle(0x1e90ff, 0x1e90ff, 0x0b3d91, 0x0b3d91, 1)
 
-    this.clouds = this.add.group()
-
-    for (let i = 0; i < 5; i++) {
-      this.spawnCloud(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(50, 200))
-    }
+    this.cloudManager = new CloudManager(this)
+    this.cloudManager.spawnInitial(5)
 
     this.anims.create({
       key: 'Joe-animation',
@@ -52,8 +50,6 @@ export class MainScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     })
-
-   
 
     this.surfboards = this.physics.add.group({
       classType: Surfboard,
@@ -73,11 +69,11 @@ export class MainScene extends Phaser.Scene {
       callbackScope: this,
     })
 
-     this.chickenJoe = new Joe(this, 150, GAME_HEIGHT / 2)
+    this.chickenJoe = new Joe(this, 150, GAME_HEIGHT / 2)
 
     this.chickenJoe.play('Joe-animation')
 
-    this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
+    // this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
   }
 
   update(_time: number, delta: number) {
@@ -89,7 +85,6 @@ export class MainScene extends Phaser.Scene {
   private spawnSurfboard() {
     const gap = 115
     const plus = Phaser.Math.Between(-100, 100)
-   
 
     const topSurfboard = new Surfboard(this, GAME_WIDTH, 100 - gap / 2 + plus, true)
 
@@ -100,28 +95,6 @@ export class MainScene extends Phaser.Scene {
 
     topSurfboard.setVelocityX(-200)
     bottomSurfboard.setVelocityX(-200)
-  }
-
-  private spawnCloud(x: number, y: number) {
-    const cloud = this.add.sprite(x, y, 'clouds')
-    cloud.setFrame(Phaser.Math.Between(0, 3))
-
-    const scale = Phaser.Math.FloatBetween(0.8, 1.4)
-    cloud.setScale(scale)
-
-    const speed = Phaser.Math.Between(20, 40)
-
-    this.tweens.add({
-      targets: cloud,
-      x: -200,
-      duration: ((x + 200) / speed) * 1000,
-      onComplete: () => {
-        cloud.destroy()
-        this.spawnCloud(GAME_WIDTH + 200, Phaser.Math.Between(50, 200))
-      },
-    })
-
-    this.clouds.add(cloud)
   }
 
   private drawOcean() {
