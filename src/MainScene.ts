@@ -96,12 +96,12 @@ export class MainScene extends Phaser.Scene {
 
   private spawnSurfboard() {
     // вынести в отдельный класс по управлению досками
-    const gap = 115
+    const gap = 125
     const plus = Phaser.Math.Between(-100, 100)
 
-    const topSurfboard = new Surfboard(this, GAME_WIDTH, 100 - gap / 2 + plus, true)
+    const topSurfboard = new Surfboard(this, GAME_WIDTH + 100, 100 - gap / 2 + plus, true)
 
-    const bottomSurfboard = new Surfboard(this, GAME_WIDTH, 450 + gap / 2 + plus, false)
+    const bottomSurfboard = new Surfboard(this, GAME_WIDTH + 100, 450 + gap / 2 + plus, false)
 
     this.surfboards.add(topSurfboard)
     this.surfboards.add(bottomSurfboard)
@@ -117,3 +117,4 @@ export class MainScene extends Phaser.Scene {
 }
 
 // настроить PWA
+// настроить depth у облаков 
