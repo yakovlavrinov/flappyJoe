@@ -12,6 +12,8 @@ export class MainScene extends Phaser.Scene {
   private cloudManager!: CloudManager
   private water!: Water
   private ui!: UIManager
+
+ private flapSound!: Phaser.Sound.BaseSound
   private isPause = true
 
   constructor() {
@@ -33,6 +35,8 @@ export class MainScene extends Phaser.Scene {
       frameHeight: 64,
       endFrame: 3,
     })
+
+    this.load.audio('flap', 'assets/Петушиный крик.wav')
   }
 
   create() {
@@ -43,6 +47,14 @@ export class MainScene extends Phaser.Scene {
       frames: [{ key: 'Joe1' }, { key: 'Joe2' }, { key: 'Joe3' }, { key: 'Joe4' }],
       frameRate: 10,
       repeat: -1,
+    })
+
+      this.flapSound = this.sound.add('flap', {
+      volume: 1,
+      rate: 1, 
+      detune: 100, 
+      loop: false,
+      delay: 0
     })
 
     this.cloudManager = new CloudManager(this)
@@ -111,10 +123,12 @@ export class MainScene extends Phaser.Scene {
   }
 
   private gameOver() {
+    this.flapSound.play()
     this.isPause = true
     this.scene.restart()
   }
 }
 
 // настроить PWA
-// настроить depth у облаков 
+// настроить depth у облаков
+// добавить звуки падения в воду, полета, природы 
