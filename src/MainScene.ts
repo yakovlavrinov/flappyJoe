@@ -4,12 +4,15 @@ import { Joe } from './Joe'
 import { Surfboard } from './Surfboard'
 import { CloudManager } from './CloudManager'
 import { Water } from './Water'
+import { UIManager } from './UIManager'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
   private surfboards!: Phaser.Physics.Arcade.Group
   private cloudManager!: CloudManager
   private water!: Water
+  private ui!: UIManager
+  private isPause = true
 
   constructor() {
     super('MainScene')
@@ -61,7 +64,7 @@ export class MainScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 1500,
       loop: true,
-      callback: this.spawnSurfboard,
+      callback: () => !this.isPause && this.spawnSurfboard(),
       callbackScope: this,
     })
 
@@ -69,15 +72,30 @@ export class MainScene extends Phaser.Scene {
 
     this.chickenJoe.play('Joe-animation')
 
-    // this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
+    this.ui = new UIManager(this)
+    this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 'FLAPPY JOE')
+    this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
+
+    this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
+  }
+
+  private startGame() {
+    this.ui.hideMenu()
+    this.isPause = false
   }
 
   update(_time: number, delta: number) {
+    if (this.isPause) {
+      this.chickenJoe.setBodyEnable(false)
+      return
+    }
+
     this.chickenJoe.update(delta)
     this.water.update(delta)
   }
 
-  private spawnSurfboard() { // вынести в отдельный класс по управлению досками
+  private spawnSurfboard() {
+    // вынести в отдельный класс по управлению досками
     const gap = 115
     const plus = Phaser.Math.Between(-100, 100)
 
@@ -93,6 +111,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   private gameOver() {
+    this.isPause = true
     this.scene.restart()
   }
 }

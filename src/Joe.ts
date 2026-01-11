@@ -31,8 +31,11 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(delta: number) {
-    const deltaSeconds = delta / 1000
     if (!this.body) return
+
+    const deltaSeconds = delta / 1000
+
+    this.setBodyEnable(true)
 
     if (this.body.velocity.y > FALL_VELOCITY) {
       this.angle = this.angle + ROTATION_SPEED * deltaSeconds
@@ -41,6 +44,11 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
         this.angle = this.angle - ROTATION_SPEED * deltaSeconds
       }
     }
+  }
+
+  setBodyEnable(enable: boolean) {
+    if (!this.body) return
+    this.body.enable = enable
   }
 
   flap() {
