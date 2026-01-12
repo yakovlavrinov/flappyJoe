@@ -5,6 +5,10 @@ export class UIManager {
   private titleText!: Phaser.GameObjects.Text
   private startBtn!: Phaser.GameObjects.Text
 
+  private scoreText!: Phaser.GameObjects.Text
+  private pauseBtn!: Phaser.GameObjects.Text
+  private isPaused: boolean = false
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene
   }
@@ -27,7 +31,6 @@ export class UIManager {
         fontSize: '64px',
         color: '#4ecdc4',
         backgroundColor: '#2c3e50',
-        strokeThickness: 0,
       })
       .setOrigin(0.5)
       .setPadding(12)
@@ -36,8 +39,53 @@ export class UIManager {
       .setDepth(1001)
   }
 
+  /** ===== UI СЧЁТА ===== */
+  createScoreUI(x: number, y: number, initialScore: number = 0) {
+    this.scoreText = this.scene.add
+      .text(x, y, `Score: ${initialScore}`, {
+        fontSize: '32px',
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 4,
+      })
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(1001)
+  }
+
+  updateScore(score: number) {
+    if (!this.scoreText) return
+    this.scoreText.setText(`Score: ${score}`)
+  }
+
+  /** ===== КНОПКА ПАУЗЫ ===== */
+  createPauseButton(x: number, y: number) {
+    this.pauseBtn = this.scene.add
+      .text(x, y, '⏸', {
+        fontSize: '32px',
+        color: '#ffffff',
+        backgroundColor: '#2c3e50',
+      })
+      .setOrigin(1, 0)
+      .setPadding(8)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => this.togglePause())
+      .setScrollFactor(0)
+      .setDepth(1001)
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused
+
+    this.scene.physics.world.isPaused = this.isPaused
+    this.scene.time.timeScale = this.isPaused ? 0 : 1
+
+    this.pauseBtn.setText(this.isPaused ? '▶' : '⏸')
+  }
+
   hideMenu() {
-    this.titleText.setVisible(false)
-    this.startBtn.setVisible(false)
+    this.titleText?.setVisible(false)
+    this.startBtn?.setVisible(false)
   }
 }
+

@@ -5,6 +5,7 @@ import { Surfboard } from './Surfboard'
 import { CloudManager } from './CloudManager'
 import { Water } from './Water'
 import { UIManager } from './UIManager'
+import { ScoreTrigger } from './ScoreTrigger'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
@@ -12,9 +13,10 @@ export class MainScene extends Phaser.Scene {
   private cloudManager!: CloudManager
   private water!: Water
   private ui!: UIManager
-
- private flapSound!: Phaser.Sound.BaseSound
+  private scoreTriggers!: Phaser.GameObjects.Group
+  private flapSound!: Phaser.Sound.BaseSound
   private isPause = true
+  score = 0
 
   constructor() {
     super('MainScene')
@@ -49,12 +51,12 @@ export class MainScene extends Phaser.Scene {
       repeat: -1,
     })
 
-      this.flapSound = this.sound.add('flap', {
+    this.flapSound = this.sound.add('flap', {
       volume: 1,
-      rate: 1, 
-      detune: 100, 
+      rate: 1,
+      detune: 100,
       loop: false,
-      delay: 0
+      delay: 0,
     })
 
     this.cloudManager = new CloudManager(this)
@@ -67,6 +69,11 @@ export class MainScene extends Phaser.Scene {
       runChildUpdate: true,
       allowGravity: false,
       immovable: true,
+    })
+
+    this.scoreTriggers = this.add.group({
+      classType: ScoreTrigger,
+      runChildUpdate: true,
     })
 
     this.input.on('pointerdown', () => {
@@ -87,8 +94,18 @@ export class MainScene extends Phaser.Scene {
     this.ui = new UIManager(this)
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 'FLAPPY JOE')
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
+    this.ui.createScoreUI(20, 20, 0)
+    this.ui.createPauseButton(this.scale.width - 20, 20)
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
+
+   this.physics.add.overlap(this.chickenJoe, this.scoreTriggers, (joe: Joe, trigger: ScoreTrigger)=>{
+    if (!trigger.scored) {
+      trigger.scored = true;
+    console.log('sdf')
+    this.score +=1
+    this.ui.updateScore(this.score)}
+   }, undefined, this)
   }
 
   private startGame() {
@@ -120,6 +137,9 @@ export class MainScene extends Phaser.Scene {
 
     topSurfboard.setVelocityX(-200)
     bottomSurfboard.setVelocityX(-200)
+
+    const trigger = new ScoreTrigger(this, GAME_WIDTH + 160, 600) // смещение по x, чтобы засчитывалось после пролёта
+    this.scoreTriggers.add(trigger)
   }
 
   private gameOver() {
@@ -131,4 +151,4 @@ export class MainScene extends Phaser.Scene {
 
 // настроить PWA
 // настроить depth у облаков
-// добавить звуки падения в воду, полета, природы 
+// добавить звуки падения в воду, полета, природы
