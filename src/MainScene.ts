@@ -16,17 +16,7 @@ export class MainScene extends Phaser.Scene {
   private scoreTriggers!: Phaser.GameObjects.Group
   private isPause = true
   score = 0
-  myAudio = [
-    'vip-chick',
-    'joseph',
-    'ku',
-    'friend',
-    'cool',
-    'pores',
-    'help',
-    'win',
-    'joe',
-  ]
+  myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
 
   constructor() {
     super('MainScene')
@@ -49,11 +39,10 @@ export class MainScene extends Phaser.Scene {
     })
 
     this.load.audio('scream-rooster', 'assets/audio/scream-rooster.wav')
-    
- this.load.audio('sea', 'assets/audio/sea.wav')
+
+    this.load.audio('sea', 'assets/audio/sea.wav')
     this.loadAudio()
   }
-  
 
   loadAudio() {
     this.myAudio.forEach((el) => this.load.audio(el, `assets/audio/${el}.wav`))
@@ -76,8 +65,6 @@ export class MainScene extends Phaser.Scene {
       loop: true,
       delay: 0,
     })
-    
-    this.sound.play('sea')
 
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
@@ -125,7 +112,7 @@ export class MainScene extends Phaser.Scene {
       this.scoreTriggers,
       (_joeAny: any, triggerAny: any) => {
         // Безопасный кастинг — на runtime это точно Joe и ScoreTrigger
-        
+
         const trigger = triggerAny as ScoreTrigger
 
         if (!trigger.scored) {
@@ -144,6 +131,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   private startGame() {
+    this.sound.play('sea')
     this.ui.hideMenu()
     this.isPause = false
   }
@@ -179,7 +167,7 @@ export class MainScene extends Phaser.Scene {
 
   private gameOver() {
     this.score = 0
-    this.sound.stopAll();
+    this.sound.stopAll()
     this.sound.play('scream-rooster')
     this.isPause = true
     this.scene.restart()

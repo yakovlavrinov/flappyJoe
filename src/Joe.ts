@@ -16,8 +16,8 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this)
     scene.physics.add.existing(this)
-
-    this.setScale(SCALE)
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent)
+    this.setScale(isIOS ? SCALE * window.devicePixelRatio : SCALE)
 
     if (!this.body) return
 
