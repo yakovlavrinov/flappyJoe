@@ -14,9 +14,19 @@ export class MainScene extends Phaser.Scene {
   private water!: Water
   private ui!: UIManager
   private scoreTriggers!: Phaser.GameObjects.Group
-  private flapSound!: Phaser.Sound.BaseSound
   private isPause = true
   score = 0
+  myAudio = [
+    'vip-chick',
+    'joseph',
+    'ku',
+    'friend',
+    'cool',
+    'pores',
+    'help',
+    'win',
+    'joe',
+  ]
 
   constructor() {
     super('MainScene')
@@ -38,7 +48,15 @@ export class MainScene extends Phaser.Scene {
       endFrame: 3,
     })
 
-    this.load.audio('flap', 'assets/Петушиный крик.wav')
+    this.load.audio('scream-rooster', 'assets/audio/scream-rooster.wav')
+    
+ this.load.audio('sea', 'assets/audio/sea.wav')
+    this.loadAudio()
+  }
+  
+
+  loadAudio() {
+    this.myAudio.forEach((el) => this.load.audio(el, `assets/audio/${el}.wav`))
   }
 
   create() {
@@ -51,13 +69,15 @@ export class MainScene extends Phaser.Scene {
       repeat: -1,
     })
 
-    this.flapSound = this.sound.add('flap', {
+    this.sound.add('sea', {
       volume: 1,
       rate: 1,
       detune: 100,
-      loop: false,
+      loop: true,
       delay: 0,
     })
+    
+    this.sound.play('sea')
 
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
@@ -110,6 +130,10 @@ export class MainScene extends Phaser.Scene {
 
         if (!trigger.scored) {
           trigger.scored = true
+          if (this.score % 3 === 0 && this.score !== 0) {
+            const audio = this.myAudio[Math.floor(Math.random() * this.myAudio.length)]
+            this.sound.play(audio)
+          }
           this.score += 1
           this.ui.updateScore(this.score)
         }
@@ -136,7 +160,7 @@ export class MainScene extends Phaser.Scene {
 
   private spawnSurfboard() {
     // вынести в отдельный класс по управлению досками
-    const gap = 125
+    const gap = 165
     const plus = Phaser.Math.Between(-100, 100)
 
     const topSurfboard = new Surfboard(this, GAME_WIDTH + 100, 100 - gap / 2 + plus, true)
@@ -154,7 +178,9 @@ export class MainScene extends Phaser.Scene {
   }
 
   private gameOver() {
-    this.flapSound.play()
+    this.score = 0
+    this.sound.stopAll();
+    this.sound.play('scream-rooster')
     this.isPause = true
     this.scene.restart()
   }
