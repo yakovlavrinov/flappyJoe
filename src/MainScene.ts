@@ -148,7 +148,7 @@ export class MainScene extends Phaser.Scene {
 
   private spawnSurfboard() {
     // вынести в отдельный класс по управлению досками
-    const gap = 100
+    const gap = 120
     const plus = Phaser.Math.Between(-100, 100)
 
     const topSurfboard = new Surfboard(this, GAME_WIDTH + 100, 100 - gap / 2 + plus, true)
