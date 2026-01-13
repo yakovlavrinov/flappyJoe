@@ -99,13 +99,24 @@ export class MainScene extends Phaser.Scene {
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 
-   this.physics.add.overlap(this.chickenJoe, this.scoreTriggers, (joe: Joe, trigger: ScoreTrigger)=>{
-    if (!trigger.scored) {
-      trigger.scored = true;
-    console.log('sdf')
-    this.score +=1
-    this.ui.updateScore(this.score)}
-   }, undefined, this)
+    // В методе create(), где создаётся overlap:
+    this.physics.add.overlap(
+      this.chickenJoe,
+      this.scoreTriggers,
+      (joeAny: any, triggerAny: any) => {
+        // Безопасный кастинг — на runtime это точно Joe и ScoreTrigger
+        const joe = joeAny as Joe
+        const trigger = triggerAny as ScoreTrigger
+
+        if (!trigger.scored) {
+          trigger.scored = true
+          this.score += 1
+          this.ui.updateScore(this.score)
+        }
+      },
+      undefined,
+      this
+    )
   }
 
   private startGame() {
