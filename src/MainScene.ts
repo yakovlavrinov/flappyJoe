@@ -123,9 +123,9 @@ export class MainScene extends Phaser.Scene {
     this.physics.add.overlap(
       this.chickenJoe,
       this.scoreTriggers,
-      (joeAny: any, triggerAny: any) => {
+      (_joeAny: any, triggerAny: any) => {
         // Безопасный кастинг — на runtime это точно Joe и ScoreTrigger
-        const joe = joeAny as Joe
+        
         const trigger = triggerAny as ScoreTrigger
 
         if (!trigger.scored) {
