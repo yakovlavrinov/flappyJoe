@@ -14,13 +14,13 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
 
   scale: {
     mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    // autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { x: GRAVITY_X, y: GRAVITY_Y },
-      debug: true,
+      debug: false,
     },
   },
   scene: [MainScene],

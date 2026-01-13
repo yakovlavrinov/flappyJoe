@@ -2,9 +2,9 @@ import Phaser from 'phaser'
 
 const SCALE = 0.6
 const BODY_WIDTH = 80
-const BODY_HEIGHT = 80
+const BODY_HEIGHT = 50
 const BODY_OFFSET_X = 60
-const BODY_OFFSET_Y = 35
+const BODY_OFFSET_Y = 50
 const ANGLE_INIT = 30
 const FALL_VELOCITY = 300
 const ROTATION_SPEED = 100
@@ -21,6 +21,7 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
 
     if (!this.body) return
 
+    
     this.body.setSize(
       isIOS ? BODY_WIDTH / window.devicePixelRatio : BODY_WIDTH,
       isIOS ? BODY_HEIGHT / window.devicePixelRatio : BODY_HEIGHT
@@ -30,6 +31,8 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
       isIOS ? BODY_OFFSET_X / window.devicePixelRatio : BODY_OFFSET_X,
       isIOS ? BODY_OFFSET_Y / window.devicePixelRatio : BODY_OFFSET_Y
     )
+
+     this.setDepth(45)
 
     this.setAngle(ANGLE_INIT)
     this.setFlipX(true)

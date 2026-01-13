@@ -1,7 +1,8 @@
 import Phaser from 'phaser'
+import type { MainScene } from './MainScene'
 
 export class UIManager {
-  private scene!: Phaser.Scene
+  private scene!: MainScene
   private titleText!: Phaser.GameObjects.Text
   private startBtn!: Phaser.GameObjects.Text
 
@@ -10,7 +11,7 @@ export class UIManager {
   private isPaused: boolean = false
 
   constructor(scene: Phaser.Scene) {
-    this.scene = scene
+    this.scene = scene as MainScene
   }
 
   createTitle(x: number, y: number, text: string) {
@@ -63,8 +64,8 @@ export class UIManager {
     this.pauseBtn = this.scene.add
       .text(x, y, '⏸', {
         fontSize: '32px',
-        color: '#ffffff',
-        backgroundColor: '#2c3e50',
+        color: '#525252',
+        // backgroundColor: '#2c3e50',
       })
       .setOrigin(1, 0)
       .setPadding(8)
@@ -81,6 +82,8 @@ export class UIManager {
     this.scene.time.timeScale = this.isPaused ? 0 : 1
 
     this.pauseBtn.setText(this.isPaused ? '▶' : '⏸')
+    // @ts-ignore
+    this.isPaused ? this.scene.start() : this.scene.pause()
   }
 
   hideMenu() {
@@ -88,4 +91,3 @@ export class UIManager {
     this.startBtn?.setVisible(false)
   }
 }
-
