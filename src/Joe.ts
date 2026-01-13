@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
-
+// @ts-ignore
 const SCALE = 0.6
 const BODY_WIDTH = 80
-const BODY_HEIGHT = 50
-const BODY_OFFSET_X = 60
+const BODY_HEIGHT = 30
+const BODY_OFFSET_X = 30
 const BODY_OFFSET_Y = 50
 const ANGLE_INIT = 30
 const FALL_VELOCITY = 300
@@ -16,8 +16,10 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this)
     scene.physics.add.existing(this)
-    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent)
-    this.setScale(isIOS ? SCALE * window.devicePixelRatio : SCALE)
+    const isIOS = false
+        // const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent)
+
+    // this.setScale(isIOS ? SCALE * window.devicePixelRatio : SCALE)
 
     if (!this.body) return
 

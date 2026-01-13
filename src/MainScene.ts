@@ -27,10 +27,10 @@ export class MainScene extends Phaser.Scene {
       width: 150,
       height: 350,
     })
-    this.load.svg('Joe1', 'assets/Joe1.svg')
-    this.load.svg('Joe2', 'assets/Joe2.svg')
-    this.load.svg('Joe3', 'assets/Joe3.svg')
-    this.load.svg('Joe4', 'assets/Joe4.svg')
+    this.load.svg('Joe1', 'assets/Joe1.svg', { width: 120, height: 120 })
+    this.load.svg('Joe2', 'assets/Joe2.svg', { width: 120, height: 120 })
+    this.load.svg('Joe3', 'assets/Joe3.svg', { width: 120, height: 120 })
+    this.load.svg('Joe4', 'assets/Joe4.svg', { width: 120, height: 120 })
 
     this.load.spritesheet('clouds', 'assets/clouds.png', {
       frameWidth: 128,
@@ -171,7 +171,6 @@ export class MainScene extends Phaser.Scene {
     this.sound.play('scream-rooster')
     this.isPause = true
     this.scene.restart()
-    
   }
 }
 
