@@ -21,7 +21,10 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
 
     if (!this.body) return
 
-    this.body.setSize(BODY_WIDTH, BODY_HEIGHT)
+    this.body.setSize(
+      isIOS ? BODY_WIDTH / window.devicePixelRatio : BODY_WIDTH,
+      isIOS ? BODY_HEIGHT / window.devicePixelRatio : BODY_HEIGHT
+    )
     this.body.setOffset(BODY_OFFSET_X, BODY_OFFSET_Y)
 
     this.setAngle(ANGLE_INIT)
