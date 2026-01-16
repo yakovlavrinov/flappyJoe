@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { MainScene } from './MainScene'
+import { PreloadScene } from './scene/PreloadScene'
 
 export const GAME_WIDTH = 400
 export const GAME_HEIGHT = 600
@@ -14,7 +15,6 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
 
   scale: {
     mode: Phaser.Scale.FIT,
-    // autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   physics: {
     default: 'arcade',
@@ -23,5 +23,5 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
       debug: false,
     },
   },
-  scene: [MainScene],
+  scene: [PreloadScene, MainScene],
 }

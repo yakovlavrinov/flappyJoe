@@ -32,4 +32,8 @@ export class PreloadScene extends Phaser.Scene {
   loadAudio() {
     this.myAudio.forEach((el) => this.load.audio(el, `assets/audio/${el}.wav`))
   }
+
+  create() {
+    this.scene.start('MainScene')
+  }
 }
