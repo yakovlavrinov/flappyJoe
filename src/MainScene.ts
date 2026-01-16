@@ -1,11 +1,11 @@
 import Phaser from 'phaser'
 import { GAME_HEIGHT, GAME_WIDTH } from './config'
-import { Joe } from './Joe'
-import { Surfboard } from './Surfboard'
+import { Joe } from './entities/Joe'
+import { Surfboard } from './entities/Surfboard'
 import { CloudManager } from './CloudManager'
-import { Water } from './Water'
+import { Water } from './entities/Water'
 import { UIManager } from './UIManager'
-import { ScoreTrigger } from './ScoreTrigger'
+import { ScoreTrigger } from './entities/ScoreTrigger'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
