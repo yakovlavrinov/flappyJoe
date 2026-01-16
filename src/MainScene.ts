@@ -65,6 +65,7 @@ export class MainScene extends Phaser.Scene {
       loop: true,
       delay: 0,
     })
+    this.sound.play('sea')
 
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
@@ -131,7 +132,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   private startGame() {
-    this.sound.play('sea')
     this.ui.hideMenu()
     this.isPause = false
   }
