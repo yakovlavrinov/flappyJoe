@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 import { GAME_HEIGHT, GAME_WIDTH } from '../config'
 
-
 const GRAPHICS_DEPTH = 50
 const SURFACE_COLOR = 0x1e90ff
 const DEEP_COLOR = 0x0b3d91
