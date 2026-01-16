@@ -15,6 +15,7 @@ export class MainScene extends Phaser.Scene {
   private ui!: UIManager
   private scoreTriggers!: Phaser.GameObjects.Group
   private isPause = true
+  private seaSound!: Phaser.Sound.BaseSound
   score = 0
   myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
 
@@ -58,14 +59,14 @@ export class MainScene extends Phaser.Scene {
       repeat: -1,
     })
 
-    this.sound.add('sea', {
+    this.seaSound = this.sound.add('sea', {
       volume: 1,
       rate: 1,
       detune: 100,
       loop: true,
       delay: 0,
     })
-    this.sound.play('sea')
+    this.seaSound.play()
 
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
@@ -127,7 +128,7 @@ export class MainScene extends Phaser.Scene {
         }
       },
       undefined,
-      this
+      this,
     )
   }
 
