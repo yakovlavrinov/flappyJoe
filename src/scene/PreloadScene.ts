@@ -1,6 +1,15 @@
 import Phaser from 'phaser'
 
 export class PreloadScene extends Phaser.Scene {
+  private progressBar!: Phaser.GameObjects.Graphics
+  private percentText!: Phaser.GameObjects.Text
+  private assetText!: Phaser.GameObjects.Text
+  private progressFillConfig!: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
   private myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
 
   constructor() {
@@ -26,14 +35,103 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio('scream-rooster', 'assets/audio/scream-rooster.wav')
 
     this.load.audio('sea', 'assets/audio/sea.wav')
+
     this.loadAudio()
+
+    this.loader()
   }
 
   loadAudio() {
     this.myAudio.forEach((el) => this.load.audio(el, `assets/audio/${el}.wav`))
   }
 
-  create() {
-    this.scene.start('MainScene')
+ 
+
+  private loader() {
+    this.createLoadingUI()
+    this.initLoadingEvents()
+  }
+
+  private createLoadingUI() {
+    const { width, height } = this.cameras.main
+
+    const centerX = width / 2
+    const centerY = height / 2
+
+    
+    const progressBoxX = centerX - 160
+    const progressBoxY = centerY - 25
+    const progressBoxWidth = 320
+    const progressBoxHeight = 50
+
+    
+    this.progressFillConfig = {
+      x: centerX - 150,
+      y: centerY - 15,
+      width: 300,
+      height: 30,
+    }
+
+    
+    const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+      fontFamily: 'monospace',
+      color: '#ffffff',
+    }
+
+   
+    const progressBox = this.add.graphics()
+    progressBox.fillStyle(0x222222, 0.8)
+    progressBox.fillRect(progressBoxX, progressBoxY, progressBoxWidth, progressBoxHeight)
+
+    
+    this.progressBar = this.add.graphics()
+
+    
+    this.add
+      .text(centerX, centerY - 60, 'Загрузка...', {
+        ...textStyle,
+        fontSize: '24px',
+      })
+      .setOrigin(0.5)
+
+
+    this.percentText = this.add
+      .text(centerX, centerY, '0%', {
+        ...textStyle,
+        fontSize: '20px',
+        stroke: '#000000',
+        strokeThickness: 4,
+      })
+      .setOrigin(0.5)
+
+ 
+    this.assetText = this.add
+      .text(centerX, centerY + 40, '', {
+        ...textStyle,
+        fontSize: '18px',
+      })
+      .setOrigin(0.5)
+  }
+
+  private initLoadingEvents() {
+    const { x, y, width, height } = this.progressFillConfig
+
+    
+    this.load.on('progress', (value: number) => {
+      this.percentText.setText(Math.round(value * 100) + '%')
+      this.progressBar.clear()
+      this.progressBar.fillStyle(0xffffff, 1)
+      this.progressBar.fillRect(x, y, width * value, height)
+    })
+
+    
+    this.load.on('fileprogress', (file: Phaser.Loader.File) => {
+      this.assetText.setText('Загружается: ' + file.key)
+    })
+
+    
+    this.load.on('complete', () => {
+      this.scene.start('MainScene')
+    })
   }
 }
