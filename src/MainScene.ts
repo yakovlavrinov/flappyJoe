@@ -141,9 +141,13 @@ export class MainScene extends Phaser.Scene {
   }
 
   private gameOver() {
-    this.score = 0
     this.sound.stopAll()
-    this.sound.play('scream-rooster')
+    if (this.score > 7) {
+      this.sound.play('scream-rooster')
+    }else {
+      this.sound.play('game-over')
+    }
+    this.score = 0
     this.isPause = true
     this.scene.restart()
   }
@@ -152,4 +156,4 @@ export class MainScene extends Phaser.Scene {
 // настроить PWA
 // настроить depth у облаков
 // добавить звуки падения в воду, полета, природы
-// добавить управление с клавиш пробел стрелка вверх 
+// добавить управление с клавиш пробел стрелка вверх

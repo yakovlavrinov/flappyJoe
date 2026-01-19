@@ -33,6 +33,7 @@ export class PreloadScene extends Phaser.Scene {
     })
 
     this.load.audio('scream-rooster', 'assets/audio/scream-rooster.wav')
+    this.load.audio('game-over', 'assets/audio/game-over.wav')
 
     this.load.audio('sea', 'assets/audio/sea.wav')
 
