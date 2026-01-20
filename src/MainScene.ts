@@ -108,6 +108,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   private startGame() {
+    this.ui.hideGameOverUI()
     this.ui.hideMenu()
     this.isPause = false
   }
@@ -177,3 +178,6 @@ private restartGame() {
 // добавить звуки падения в воду, полета, природы
 // добавить управление с клавиш пробел стрелка вверх и геймпад
 // ачивки
+// звук на старт ну что погнали 
+// звук рестарт ок летс гоу
+// рекорд локал стораж 
