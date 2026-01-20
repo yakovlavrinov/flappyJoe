@@ -6,6 +6,7 @@ import { CloudManager } from './CloudManager'
 import { Water } from './entities/Water'
 import { UIManager } from './UIManager'
 import { ScoreTrigger } from './entities/ScoreTrigger'
+import { LanguageManager as i18n } from './i18n/LanguageManager'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
@@ -76,7 +77,7 @@ export class MainScene extends Phaser.Scene {
     this.chickenJoe.play('Joe-animation')
 
     this.ui = new UIManager(this)
-    this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 'FLAPPY JOE')
+    this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, i18n.t('title'))
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
 

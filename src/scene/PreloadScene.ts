@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { LanguageManager } from '../i18n/LanguageManager'
 
 export class PreloadScene extends Phaser.Scene {
   private progressBar!: Phaser.GameObjects.Graphics
@@ -40,6 +41,9 @@ export class PreloadScene extends Phaser.Scene {
     this.loadAudio()
 
     this.loader()
+
+    LanguageManager.init()
+
   }
 
   loadAudio() {
