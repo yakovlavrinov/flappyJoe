@@ -17,6 +17,7 @@ export class MainScene extends Phaser.Scene {
   private isPause = true
   private seaSound!: Phaser.Sound.BaseSound
   score = 0
+  isGameOver = false
   myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
 
   constructor() {
@@ -141,21 +142,38 @@ export class MainScene extends Phaser.Scene {
   }
 
   private gameOver() {
-    this.sound.stopAll()
-    if (this.score > 7) {
-      this.sound.play('scream-rooster')
-    }else {
-      this.sound.play('game-over')
-    }
-    this.score = 0
-    this.isPause = true
-    this.scene.restart()
+    if (this.isGameOver)return
+  this.sound.stopAll()
+
+  if (this.score > 7) {
+    this.sound.play('scream-rooster')
+  } else {
+    this.sound.play('game-over')
   }
+
+  this.isGameOver = true
+
+  
+  this.time.timeScale = 0
+
+  this.ui.createGameOverUI(this.score, () => this.restartGame())
+}
+
+private restartGame() {
+  this.time.timeScale = 1
+  this.physics.world.resume()
+
+  this.score = 0
+    this.isPause = true
+    this.isGameOver = false
+  this.scene.restart()
+}
+
+
 }
 
 // настроить PWA
 // настроить depth у облаков
 // добавить звуки падения в воду, полета, природы
 // добавить управление с клавиш пробел стрелка вверх и геймпад
-// подведение итогов
 // ачивки

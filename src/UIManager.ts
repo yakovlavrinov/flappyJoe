@@ -10,6 +10,10 @@ export class UIManager {
   private pauseBtn!: Phaser.GameObjects.Text
   private isPaused: boolean = false
 
+  private gameOverTitle!: Phaser.GameObjects.Text
+  private finalScoreText!: Phaser.GameObjects.Text
+  private restartBtn!: Phaser.GameObjects.Text
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene as MainScene
   }
@@ -90,4 +94,49 @@ export class UIManager {
     this.titleText?.setVisible(false)
     this.startBtn?.setVisible(false)
   }
+
+  createGameOverUI(score: number, onRestart: () => void) {
+  const centerX = this.scene.scale.width / 2
+  const centerY = this.scene.scale.height / 2
+
+  this.gameOverTitle = this.scene.add
+    .text(centerX, centerY - 80, 'GAME OVER', {
+      fontSize: '64px',
+      color: '#ff4d4d',
+      stroke: '#000',
+      strokeThickness: 6,
+    })
+    .setOrigin(0.5)
+    .setDepth(1002)
+
+  this.finalScoreText = this.scene.add
+    .text(centerX, centerY, `Score: ${score}`, {
+      fontSize: '40px',
+      color: '#ffffff',
+      stroke: '#000',
+      strokeThickness: 4,
+    })
+    .setOrigin(0.5)
+    .setDepth(1002)
+
+  this.restartBtn = this.scene.add
+    .text(centerX, centerY + 80, 'RESTART', {
+      fontSize: '48px',
+      color: '#4ecdc4',
+      backgroundColor: '#2c3e50',
+    })
+    .setPadding(12)
+    .setOrigin(0.5)
+    .setInteractive({ useHandCursor: true })
+    .on('pointerdown', onRestart)
+    .setDepth(1002)
+}
+
+hideGameOverUI() {
+  this.gameOverTitle?.destroy()
+  this.finalScoreText?.destroy()
+  this.restartBtn?.destroy()
+}
+
+
 }
