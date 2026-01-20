@@ -79,7 +79,6 @@ export class MainScene extends Phaser.Scene {
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 'FLAPPY JOE')
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
-    this.ui.createPauseButton(this.scale.width - 20, 20)
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 
@@ -181,3 +180,4 @@ private restartGame() {
 // звук на старт ну что погнали 
 // звук рестарт ок летс гоу
 // рекорд локал стораж 
+// отключить управление при конце игры
