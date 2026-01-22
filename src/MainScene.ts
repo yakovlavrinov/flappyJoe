@@ -81,6 +81,7 @@ export class MainScene extends Phaser.Scene {
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, i18n.t('title'))
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
+    this.ui.createLanguageButton();
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 

@@ -12,6 +12,7 @@ export class UIManager {
   private gameOverTitle!: Phaser.GameObjects.Text
   private finalScoreText!: Phaser.GameObjects.Text
   private restartBtn!: Phaser.GameObjects.Text
+  private langBtn!: Phaser.GameObjects.Text
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene as MainScene
@@ -43,7 +44,48 @@ export class UIManager {
       .setDepth(1001)
   }
 
-  /** ===== UI СЧЁТА ===== */
+createLanguageButton() {
+  const lang = i18n.getLanguage();           
+  const text = lang.toUpperCase();          
+
+  this.langBtn = this.scene.add.text(
+    this.scene.scale.width - 20,  
+    20,                           
+    text,
+    {
+      fontSize: '24px',
+      color: '#ffffff',
+      backgroundColor: '#2c3e50',
+      padding: { x: 6, y: 4 },
+    }
+  )
+    .setOrigin(1, 0)                   
+    .setScrollFactor(0)
+    .setDepth(1005)
+    .setInteractive({ useHandCursor: true })
+    .on('pointerdown', () => this.switchLanguage());
+}
+
+
+private switchLanguage() {
+  const current = i18n.getLanguage();
+  const next = current === 'ru' ? 'en' : 'ru';
+
+  i18n.setLanguage(next);
+  this.langBtn.setText(next.toUpperCase());
+
+  
+  if (this.scoreText) {
+    this.scoreText.setText(`${i18n.t('score')}: ${this.scene.score}`);
+  }
+  if (this.titleText) {
+    this.titleText.setText(`${i18n.t('title')}`);
+  }
+  if (this.startBtn) {
+    this.startBtn.setText(`${i18n.t('start')}`);
+  }
+}
+
   createScoreUI(x: number, y: number, initialScore: number = 0) {
     this.scoreText = this.scene.add
       .text(x, y, `${i18n.t('score')}: ${initialScore}`, {
@@ -62,9 +104,8 @@ export class UIManager {
     this.scoreText.setText(`${i18n.t('score')}: ${score}`)
   }
 
-  /** ===== КНОПКА ПАУЗЫ ===== */
-
   hideMenu() {
+    this.langBtn?.setVisible(false)
     this.titleText?.setVisible(false)
     this.startBtn?.setVisible(false)
   }

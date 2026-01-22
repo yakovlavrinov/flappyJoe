@@ -3,6 +3,6 @@ export default {
   start: 'START',
   gameOver: 'GAME OVER',
   score: 'Score',
-  highScore: 'High score',
+  highScore: 'High',
   restart: 'RESTART',
 }
