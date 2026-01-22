@@ -8,12 +8,9 @@ export class UIManager {
   private startBtn!: Phaser.GameObjects.Text
 
   private scoreText!: Phaser.GameObjects.Text
-  private pauseBtn!: Phaser.GameObjects.Text
-  private isPaused: boolean = false
 
   private gameOverTitle!: Phaser.GameObjects.Text
   private finalScoreText!: Phaser.GameObjects.Text
-  private recordText!: Phaser.GameObjects.Text
   private restartBtn!: Phaser.GameObjects.Text
 
   constructor(scene: Phaser.Scene) {
@@ -66,31 +63,6 @@ export class UIManager {
   }
 
   /** ===== КНОПКА ПАУЗЫ ===== */
-  createPauseButton(x: number, y: number) {
-    this.pauseBtn = this.scene.add
-      .text(x, y, '⏸', {
-        fontSize: '32px',
-        color: '#525252',
-        // backgroundColor: '#2c3e50',
-      })
-      .setOrigin(1, 0)
-      .setPadding(8)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => this.togglePause())
-      .setScrollFactor(0)
-      .setDepth(1001)
-  }
-
-  togglePause() {
-    this.isPaused = !this.isPaused
-
-    this.scene.physics.world.isPaused = this.isPaused
-    this.scene.time.timeScale = this.isPaused ? 0 : 1
-
-    this.pauseBtn.setText(this.isPaused ? '▶' : '⏸')
-    // @ts-ignore
-    this.isPaused ? this.scene.start() : this.scene.pause()
-  }
 
   hideMenu() {
     this.titleText?.setVisible(false)
@@ -112,7 +84,7 @@ export class UIManager {
       .setDepth(1002)
 
     this.finalScoreText = this.scene.add
-      .text(centerX, centerY -80, `${i18n.t('score')}: ${score}`, {
+      .text(centerX, centerY - 80, `${i18n.t('score')}: ${score}`, {
         fontSize: '40px',
         color: '#ffffff',
         stroke: '#000',
@@ -124,7 +96,7 @@ export class UIManager {
     const highScore = localStorage.getItem('highScore')
     console.log('highScore UI', highScore)
     if (highScore) {
-      this.recordText = this.scene.add
+      this.scene.add
         .text(centerX, centerY - 20, `${i18n.t('highScore')}: ${highScore}`, {
           fontSize: '40px',
           color: '#ffffff',
