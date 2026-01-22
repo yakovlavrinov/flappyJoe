@@ -156,6 +156,10 @@ export class MainScene extends Phaser.Scene {
     } else {
       this.sound.play('game-over')
     }
+    const highScore = localStorage.getItem('highScore')
+    if (!highScore || +highScore < this.score) {
+      localStorage.setItem('highScore', String(this.score))
+    }
 
     this.isGameOver = true
 
@@ -181,4 +185,3 @@ export class MainScene extends Phaser.Scene {
 // ачивки
 // звук на старт ну что погнали
 // звук рестарт ок летс гоу
-// рекорд локал стораж

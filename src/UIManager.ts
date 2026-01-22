@@ -13,6 +13,7 @@ export class UIManager {
 
   private gameOverTitle!: Phaser.GameObjects.Text
   private finalScoreText!: Phaser.GameObjects.Text
+  private recordText!: Phaser.GameObjects.Text
   private restartBtn!: Phaser.GameObjects.Text
 
   constructor(scene: Phaser.Scene) {
@@ -101,7 +102,7 @@ export class UIManager {
     const centerY = this.scene.scale.height / 2
 
     this.gameOverTitle = this.scene.add
-      .text(centerX, centerY - 80, i18n.t('gameOver'), {
+      .text(centerX, centerY - 160, i18n.t('gameOver'), {
         fontSize: '64px',
         color: '#ff4d4d',
         stroke: '#000',
@@ -111,7 +112,7 @@ export class UIManager {
       .setDepth(1002)
 
     this.finalScoreText = this.scene.add
-      .text(centerX, centerY, `${i18n.t('score')}: ${score}`, {
+      .text(centerX, centerY -80, `${i18n.t('score')}: ${score}`, {
         fontSize: '40px',
         color: '#ffffff',
         stroke: '#000',
@@ -120,8 +121,22 @@ export class UIManager {
       .setOrigin(0.5)
       .setDepth(1002)
 
+    const highScore = localStorage.getItem('highScore')
+    console.log('highScore UI', highScore)
+    if (highScore) {
+      this.recordText = this.scene.add
+        .text(centerX, centerY - 20, `${i18n.t('highScore')}: ${highScore}`, {
+          fontSize: '40px',
+          color: '#ffffff',
+          stroke: '#000',
+          strokeThickness: 4,
+        })
+        .setOrigin(0.5)
+        .setDepth(1002)
+    }
+
     this.restartBtn = this.scene.add
-      .text(centerX, centerY + 80, i18n.t('score'), {
+      .text(centerX, centerY + 60, i18n.t('restart'), {
         fontSize: '48px',
         color: '#4ecdc4',
         backgroundColor: '#2c3e50',

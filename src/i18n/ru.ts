@@ -3,5 +3,6 @@ export default {
   start: 'СТАРТ',
   gameOver: 'КОНЕЦ ИГРЫ',
   score: 'Счёт',
+  highScore: 'Рекорд',
   restart: 'ЗАНОВО',
 }
