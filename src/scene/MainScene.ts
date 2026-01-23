@@ -236,5 +236,4 @@ export class MainScene extends Phaser.Scene {
   }
 }
 
-// настроить PWA
 // ачивки
