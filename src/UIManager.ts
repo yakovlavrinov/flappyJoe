@@ -21,7 +21,7 @@ export class UIManager {
   createTitle(x: number, y: number, text: string) {
     this.titleText = this.scene.add
       .text(x, y, text, {
-        fontSize: '48px',
+        fontSize: '42px',
         color: '#ffffff',
         stroke: '#000000',
         strokeThickness: 6,
@@ -110,7 +110,7 @@ export class UIManager {
 
     this.gameOverTitle = this.scene.add
       .text(centerX, centerY - 160, i18n.t('gameOver'), {
-        fontSize: '64px',
+        fontSize: '56px',
         color: '#ff4d4d',
         stroke: '#000',
         strokeThickness: 6,
