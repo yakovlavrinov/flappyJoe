@@ -18,6 +18,8 @@ export class MainScene extends Phaser.Scene {
   private isPause = true
   private seaSound!: Phaser.Sound.BaseSound
   private prevLeftStickY = 0
+  private splashEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
+  oneSplash = false
   score = 0
   isGameOver = false
   myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
@@ -108,6 +110,31 @@ export class MainScene extends Phaser.Scene {
       undefined,
       this,
     )
+
+    if (!this.textures.exists('splash-particle')) {
+      const graphics = this.make.graphics({ x: 0, y: 0 })
+
+      graphics.fillStyle(0x88ffff, 0.9)
+      graphics.fillCircle(6, 6, 5.5)
+
+      graphics.fillStyle(0x10e6e6, 0.7)
+      graphics.fillCircle(6, 6, 4)
+
+      graphics.generateTexture('splash-particle', 12, 12)
+      graphics.destroy()
+    }
+
+    this.splashEmitter = this.add.particles(0, 0, 'splash-particle', {
+      x: 0,
+      y: 0,
+      lifespan: 800,
+      speed: { min: 100, max: 300 },
+      scale: { start: 0.5, end: 0 },
+      gravityY: 300,
+      quantity: 15,
+      emitting: false,
+      blendMode: 'ADD',
+    })
   }
   private handleFlap() {
     if (this.isGameOver) return
@@ -140,9 +167,20 @@ export class MainScene extends Phaser.Scene {
       this.prevLeftStickY = currentY
     }
 
+    if (this.chickenJoe.y >= GAME_HEIGHT - 100) {
+      if (this.oneSplash) return
+      this.createSplashEffect(this.chickenJoe.x, this.chickenJoe.y)
+    }
+
     if (this.chickenJoe.y >= GAME_HEIGHT - 50) {
+      this.oneSplash = true
       this.gameOver()
     }
+  }
+
+  private createSplashEffect(x: number, y: number) {
+    this.splashEmitter.setPosition(x, y)
+    this.splashEmitter.explode()
   }
 
   private spawnSurfboard() {
@@ -189,6 +227,7 @@ export class MainScene extends Phaser.Scene {
     this.time.timeScale = 1
     this.physics.world.resume()
 
+    this.oneSplash = false
     this.score = 0
     this.isPause = true
     this.isGameOver = false
@@ -198,5 +237,4 @@ export class MainScene extends Phaser.Scene {
 }
 
 // настроить PWA
-// добавить звуки падения в воду, полета, природы
 // ачивки
