@@ -1,12 +1,12 @@
 import Phaser from 'phaser'
-import { GAME_HEIGHT, GAME_WIDTH } from './config'
-import { Joe } from './entities/Joe'
-import { Surfboard } from './entities/Surfboard'
-import { CloudManager } from './CloudManager'
-import { Water } from './entities/Water'
-import { UIManager } from './UIManager'
-import { ScoreTrigger } from './entities/ScoreTrigger'
-import { LanguageManager as i18n } from './i18n/LanguageManager'
+import { GAME_HEIGHT, GAME_WIDTH } from '../config'
+import { Joe } from '../entities/Joe'
+import { Surfboard } from '../entities/Surfboard'
+import { CloudManager } from '../CloudManager'
+import { Water } from '../entities/Water'
+import { UIManager } from '../UIManager'
+import { ScoreTrigger } from '../entities/ScoreTrigger'
+import { LanguageManager as i18n } from '../i18n/LanguageManager'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
@@ -17,6 +17,7 @@ export class MainScene extends Phaser.Scene {
   private scoreTriggers!: Phaser.GameObjects.Group
   private isPause = true
   private seaSound!: Phaser.Sound.BaseSound
+  private prevLeftStickY = 0
   score = 0
   isGameOver = false
   myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
@@ -61,10 +62,10 @@ export class MainScene extends Phaser.Scene {
       runChildUpdate: true,
     })
 
-    this.input.on('pointerdown', () => {
-      if (this.isGameOver) return
-      this.chickenJoe.flap()
-    })
+    this.input.on('pointerdown', this.handleFlap)
+    this.input.keyboard!.on('keydown-SPACE', this.handleFlap, this)
+    this.input.keyboard!.on('keydown-UP', this.handleFlap, this)
+    this.input.keyboard!.on('keydown-W', this.handleFlap, this)
 
     this.time.addEvent({
       delay: 1500,
@@ -76,12 +77,12 @@ export class MainScene extends Phaser.Scene {
     this.chickenJoe = new Joe(this, 150, GAME_HEIGHT / 2)
 
     this.chickenJoe.play('Joe-animation')
-
+    console.log(this.input.gamepad)
     this.ui = new UIManager(this)
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, i18n.t('title'))
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
-    this.ui.createLanguageButton();
+    this.ui.createLanguageButton()
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 
@@ -108,6 +109,10 @@ export class MainScene extends Phaser.Scene {
       this,
     )
   }
+  private handleFlap() {
+    if (this.isGameOver) return
+    this.chickenJoe?.flap()
+  }
 
   private startGame() {
     this.ui.hideGameOverUI()
@@ -123,6 +128,16 @@ export class MainScene extends Phaser.Scene {
 
     this.chickenJoe.update(delta)
     this.water.update(delta)
+
+    const pad = this.input.gamepad?.getPad(0)
+    if (pad && pad.axes.length > 1) {
+      const currentY = pad.axes[1].getValue()
+      const threshold = -0.3
+      if (this.prevLeftStickY >= threshold && currentY < threshold) {
+        this.handleFlap()
+      }
+      this.prevLeftStickY = currentY
+    }
 
     if (this.chickenJoe.y >= GAME_HEIGHT - 50) {
       this.gameOver()

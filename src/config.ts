@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { MainScene } from './MainScene'
+import { MainScene } from './scene/MainScene'
 import { PreloadScene } from './scene/PreloadScene'
 
 export const GAME_WIDTH = 400
@@ -24,4 +24,7 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
   scene: [PreloadScene, MainScene],
+  input: {
+    gamepad: true
+  }
 }
