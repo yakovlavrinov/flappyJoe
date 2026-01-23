@@ -62,7 +62,7 @@ export class MainScene extends Phaser.Scene {
       runChildUpdate: true,
     })
 
-    this.input.on('pointerdown', this.handleFlap)
+    this.input.on('pointerdown', this.handleFlap, this)
     this.input.keyboard!.on('keydown-SPACE', this.handleFlap, this)
     this.input.keyboard!.on('keydown-UP', this.handleFlap, this)
     this.input.keyboard!.on('keydown-W', this.handleFlap, this)
