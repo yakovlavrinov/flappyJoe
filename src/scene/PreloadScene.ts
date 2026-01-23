@@ -11,7 +11,7 @@ export class PreloadScene extends Phaser.Scene {
     width: number
     height: number
   }
-  private myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
+  private myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe', 'start', 'restart']
 
   constructor() {
     super('PreloadScene')

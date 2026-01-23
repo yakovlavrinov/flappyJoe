@@ -118,6 +118,7 @@ export class MainScene extends Phaser.Scene {
     this.ui.hideGameOverUI()
     this.ui.hideMenu()
     this.isPause = false
+    this.sound.play('start')
   }
 
   update(_time: number, delta: number) {
@@ -191,13 +192,11 @@ export class MainScene extends Phaser.Scene {
     this.score = 0
     this.isPause = true
     this.isGameOver = false
+    this.sound.play('restart')
     this.scene.restart()
   }
 }
 
 // настроить PWA
 // добавить звуки падения в воду, полета, природы
-// добавить управление с клавиш пробел стрелка вверх и геймпад
 // ачивки
-// звук на старт ну что погнали
-// звук рестарт ок летс гоу
