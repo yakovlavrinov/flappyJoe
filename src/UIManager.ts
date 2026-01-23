@@ -21,7 +21,7 @@ export class UIManager {
   createTitle(x: number, y: number, text: string) {
     this.titleText = this.scene.add
       .text(x, y, text, {
-        fontSize: '42px',
+        fontSize: '40px',
         color: '#ffffff',
         stroke: '#000000',
         strokeThickness: 6,
