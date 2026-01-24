@@ -1,8 +1,7 @@
-type Lang = 'ru' | 'en'
-
-import ru from './ru'
 import en from './en'
+import ru from './ru'
 
+type Lang = 'ru' | 'en'
 export class LanguageManager {
   private static current: Lang = 'ru'
 

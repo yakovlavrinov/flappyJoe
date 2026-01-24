@@ -16,25 +16,14 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this)
     scene.physics.add.existing(this)
-    const isIOS = false
-        // const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent)
-
-    // this.setScale(isIOS ? SCALE * window.devicePixelRatio : SCALE)
 
     if (!this.body) return
 
-    
-    this.body.setSize(
-      isIOS ? BODY_WIDTH / window.devicePixelRatio : BODY_WIDTH,
-      isIOS ? BODY_HEIGHT / window.devicePixelRatio : BODY_HEIGHT
-    )
+    this.body.setSize(BODY_WIDTH, BODY_HEIGHT)
 
-    this.body.setOffset(
-      isIOS ? BODY_OFFSET_X / window.devicePixelRatio : BODY_OFFSET_X,
-      isIOS ? BODY_OFFSET_Y / window.devicePixelRatio : BODY_OFFSET_Y
-    )
+    this.body.setOffset(BODY_OFFSET_X, BODY_OFFSET_Y)
 
-     this.setDepth(45)
+    this.setDepth(45)
 
     this.setAngle(ANGLE_INIT)
     this.setFlipX(true)

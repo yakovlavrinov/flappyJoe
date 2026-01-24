@@ -11,7 +11,19 @@ export class PreloadScene extends Phaser.Scene {
     width: number
     height: number
   }
-  private myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe', 'start', 'restart']
+  private myAudio = [
+    'vip-chick',
+    'joseph',
+    'ku',
+    'friend',
+    'cool',
+    'pores',
+    'help',
+    'win',
+    'joe',
+    'start',
+    'restart',
+  ]
 
   constructor() {
     super('PreloadScene')
@@ -43,14 +55,11 @@ export class PreloadScene extends Phaser.Scene {
     this.loader()
 
     LanguageManager.init()
-
   }
 
   loadAudio() {
     this.myAudio.forEach((el) => this.load.audio(el, `assets/audio/${el}.wav`))
   }
-
- 
 
   private loader() {
     this.createLoadingUI()
@@ -63,13 +72,11 @@ export class PreloadScene extends Phaser.Scene {
     const centerX = width / 2
     const centerY = height / 2
 
-    
     const progressBoxX = centerX - 160
     const progressBoxY = centerY - 25
     const progressBoxWidth = 320
     const progressBoxHeight = 50
 
-    
     this.progressFillConfig = {
       x: centerX - 150,
       y: centerY - 15,
@@ -77,28 +84,23 @@ export class PreloadScene extends Phaser.Scene {
       height: 30,
     }
 
-    
     const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
       fontFamily: 'monospace',
       color: '#ffffff',
     }
 
-   
     const progressBox = this.add.graphics()
     progressBox.fillStyle(0x222222, 0.8)
     progressBox.fillRect(progressBoxX, progressBoxY, progressBoxWidth, progressBoxHeight)
 
-    
     this.progressBar = this.add.graphics()
 
-    
     this.add
       .text(centerX, centerY - 60, 'Загрузка...', {
         ...textStyle,
         fontSize: '24px',
       })
       .setOrigin(0.5)
-
 
     this.percentText = this.add
       .text(centerX, centerY, '0%', {
@@ -109,7 +111,6 @@ export class PreloadScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
 
- 
     this.assetText = this.add
       .text(centerX, centerY + 40, '', {
         ...textStyle,
@@ -121,7 +122,6 @@ export class PreloadScene extends Phaser.Scene {
   private initLoadingEvents() {
     const { x, y, width, height } = this.progressFillConfig
 
-    
     this.load.on('progress', (value: number) => {
       this.percentText.setText(Math.round(value * 100) + '%')
       this.progressBar.clear()
@@ -129,12 +129,10 @@ export class PreloadScene extends Phaser.Scene {
       this.progressBar.fillRect(x, y, width * value, height)
     })
 
-    
     this.load.on('fileprogress', (file: Phaser.Loader.File) => {
       this.assetText.setText('Загружается: ' + file.key)
     })
 
-    
     this.load.on('complete', () => {
       this.scene.start('MainScene')
     })

@@ -25,6 +25,6 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
   },
   scene: [PreloadScene, MainScene],
   input: {
-    gamepad: true
-  }
+    gamepad: true,
+  },
 }
