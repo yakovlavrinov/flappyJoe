@@ -7,6 +7,7 @@ import { Water } from '../entities/Water'
 import { UIManager } from '../UIManager'
 import { ScoreTrigger } from '../entities/ScoreTrigger'
 import { LanguageManager as i18n } from '../i18n/LanguageManager'
+import { initYandexSDK } from '../sdk/yandexSdk'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
@@ -245,7 +246,8 @@ export class MainScene extends Phaser.Scene {
     this.ui.createGameOverUI(this.score, () => this.restartGame())
   }
 
-  private restartGame() {
+  private async restartGame() {
+    const ysdk = await initYandexSDK()
     this.time.timeScale = 1
     this.physics.world.resume()
 
@@ -253,7 +255,18 @@ export class MainScene extends Phaser.Scene {
     this.score = 0
     this.isPause = true
     this.isGameOver = false
-    this.sound.play('restart')
-    this.scene.restart()
+
+    const that = this
+
+    ysdk.adv.showFullscreenAdv({
+      callbacks: {
+        onOpen: function () {},
+        onClose: function () {
+          that.sound.play('restart')
+          that.scene.restart()
+        },
+        onError: function () {},
+      },
+    })
   }
 }

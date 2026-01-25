@@ -3,7 +3,7 @@ import { gameConfig } from './config'
 
 new Phaser.Game(gameConfig)
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !(window as any).YaGames) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
