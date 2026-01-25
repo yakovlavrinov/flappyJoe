@@ -39,6 +39,16 @@ export class PreloadScene extends Phaser.Scene {
     this.load.svg('Joe3', 'assets/Joe3.svg', { width: 120, height: 120 })
     this.load.svg('Joe4', 'assets/Joe4.svg', { width: 120, height: 120 })
 
+    this.load.svg('Joe11', 'assets/Joe11.svg', { width: 120, height: 120 })
+    this.load.svg('Joe12', 'assets/Joe12.svg', { width: 120, height: 120 })
+    this.load.svg('Joe13', 'assets/Joe13.svg', { width: 120, height: 120 })
+    this.load.svg('Joe14', 'assets/Joe14.svg', { width: 120, height: 120 })
+
+    this.load.svg('Joe111', 'assets/Joe111.svg', { width: 120, height: 120 })
+    this.load.svg('Joe112', 'assets/Joe112.svg', { width: 120, height: 120 })
+    this.load.svg('Joe113', 'assets/Joe113.svg', { width: 120, height: 120 })
+    this.load.svg('Joe114', 'assets/Joe114.svg', { width: 120, height: 120 })
+
     this.load.spritesheet('clouds', 'assets/clouds.png', {
       frameWidth: 128,
       frameHeight: 64,

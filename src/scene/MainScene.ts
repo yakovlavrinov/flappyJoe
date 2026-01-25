@@ -38,6 +38,20 @@ export class MainScene extends Phaser.Scene {
       repeat: -1,
     })
 
+    this.anims.create({
+      key: 'Joe-animation2',
+      frames: [{ key: 'Joe11' }, { key: 'Joe12' }, { key: 'Joe13' }, { key: 'Joe14' }],
+      frameRate: 10,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'Joe-animation3',
+      frames: [{ key: 'Joe111' }, { key: 'Joe112' }, { key: 'Joe113' }, { key: 'Joe114' }],
+      frameRate: 10,
+      repeat: -1,
+    })
+
     this.seaSound = this.sound.add('sea', {
       volume: 1,
       rate: 1,
@@ -154,6 +168,14 @@ export class MainScene extends Phaser.Scene {
       return
     }
 
+    if (this.score > 30) {
+      this.chickenJoe.play('Joe-animation', true)
+    } else if (this.score > 20) {
+      this.chickenJoe.play('Joe-animation3', true)
+    } else if (this.score > 10) {
+      this.chickenJoe.play('Joe-animation2', true)
+    }
+
     this.chickenJoe.update(delta)
     this.water.update(delta)
 
@@ -235,5 +257,3 @@ export class MainScene extends Phaser.Scene {
     this.scene.restart()
   }
 }
-
-// ачивки
