@@ -1,3 +1,4 @@
+import { getYsdk } from '../sdk/yandexSdk'
 import en from './en'
 import ru from './ru'
 
@@ -23,7 +24,8 @@ export class LanguageManager {
   }
 
   static t(key: keyof typeof ru): string {
-    return this.dict[this.current][key] ?? key
+    const ysdk = getYsdk()
+    return this.dict[(ysdk?.environment.i18n.lang as Lang) || this.current][key] ?? key
   }
 
   static getLanguage() {

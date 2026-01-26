@@ -1,13 +1,13 @@
 import Phaser from 'phaser'
+import { CloudManager } from '../CloudManager'
 import { GAME_HEIGHT, GAME_WIDTH } from '../config'
 import { Joe } from '../entities/Joe'
-import { Surfboard } from '../entities/Surfboard'
-import { CloudManager } from '../CloudManager'
-import { Water } from '../entities/Water'
-import { UIManager } from '../UIManager'
 import { ScoreTrigger } from '../entities/ScoreTrigger'
+import { Surfboard } from '../entities/Surfboard'
+import { Water } from '../entities/Water'
 import { LanguageManager as i18n } from '../i18n/LanguageManager'
-import { initYandexSDK } from '../sdk/yandexSdk'
+import { getYsdk } from '../sdk/yandexSdk'
+import { UIManager } from '../UIManager'
 
 export class MainScene extends Phaser.Scene {
   private chickenJoe!: Joe
@@ -22,7 +22,10 @@ export class MainScene extends Phaser.Scene {
   private splashEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
   oneSplash = false
   score = 0
+  countAttempts = 0
   isGameOver = false
+  private startKeys!: Phaser.Input.Keyboard.Key[]
+  private restartKeys!: Phaser.Input.Keyboard.Key[]
   myAudio = ['vip-chick', 'joseph', 'ku', 'friend', 'cool', 'pores', 'help', 'win', 'joe']
 
   constructor() {
@@ -30,8 +33,19 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor('#87CEEB')
+    this.startKeys = [
+      this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+      this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
+    ]
 
+    this.restartKeys = [
+      this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+      this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
+    ]
+    this.cameras.main.setBackgroundColor('#87CEEB')
+    if (!this.anims.exists('Joe-animation')){
+
+   
     this.anims.create({
       key: 'Joe-animation',
       frames: [{ key: 'Joe1' }, { key: 'Joe2' }, { key: 'Joe3' }, { key: 'Joe4' }],
@@ -52,6 +66,7 @@ export class MainScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     })
+     }
 
     this.seaSound = this.sound.add('sea', {
       volume: 1,
@@ -94,12 +109,11 @@ export class MainScene extends Phaser.Scene {
     this.chickenJoe = new Joe(this, 150, GAME_HEIGHT / 2)
 
     this.chickenJoe.play('Joe-animation')
-    console.log(this.input.gamepad)
+
     this.ui = new UIManager(this)
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, i18n.t('title'))
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
-    this.ui.createLanguageButton()
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 
@@ -125,6 +139,22 @@ export class MainScene extends Phaser.Scene {
       undefined,
       this,
     )
+
+    this.startKeys.forEach((key) => {
+      key.on('down', () => {
+        if (this.isPause && !this.isGameOver) {
+          this.startGame()
+        }
+      })
+    })
+
+    this.restartKeys.forEach((key) => {
+      key.on('down', () => {
+        if (this.isGameOver) {
+          this.restartGame()
+        }
+      })
+    })
 
     if (!this.textures.exists('splash-particle')) {
       const graphics = this.make.graphics({ x: 0, y: 0 })
@@ -157,10 +187,15 @@ export class MainScene extends Phaser.Scene {
   }
 
   private startGame() {
+    const ysdk = getYsdk()
     this.ui.hideGameOverUI()
     this.ui.hideMenu()
     this.isPause = false
     this.sound.play('start')
+
+    if (ysdk) {
+      ysdk.features.GameplayAPI.start()
+    }
   }
 
   update(_time: number, delta: number) {
@@ -227,6 +262,13 @@ export class MainScene extends Phaser.Scene {
 
   private gameOver() {
     if (this.isGameOver) return
+
+    const ysdk = getYsdk()
+
+    if (ysdk) {
+      ysdk.features.GameplayAPI.stop()
+    }
+
     this.sound.stopAll()
 
     if (this.score > 7) {
@@ -247,26 +289,30 @@ export class MainScene extends Phaser.Scene {
   }
 
   private async restartGame() {
-    const ysdk = await initYandexSDK()
+    const ysdk = getYsdk()
     this.time.timeScale = 1
     this.physics.world.resume()
-
+    this.countAttempts += 1
     this.oneSplash = false
     this.score = 0
     this.isPause = true
     this.isGameOver = false
 
-    const that = this
-
-    ysdk.adv.showFullscreenAdv({
-      callbacks: {
-        onOpen: function () {},
-        onClose: function () {
-          that.sound.play('restart')
-          that.scene.restart()
+    if (ysdk && this.countAttempts === 7) {
+      const that = this
+      ysdk.adv.showFullscreenAdv({
+        callbacks: {
+          onOpen: function () {},
+          onClose: function () {
+            that.sound.play('restart')
+            that.scene.restart()
+          },
+          onError: function () {},
         },
-        onError: function () {},
-      },
-    })
+      })
+    } else {
+      this.sound.play('restart')
+      this.scene.restart()
+    }
   }
 }

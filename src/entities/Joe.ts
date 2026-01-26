@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 // @ts-ignore
 const SCALE = 0.6
 const BODY_WIDTH = 80
-const BODY_HEIGHT = 30
+const BODY_HEIGHT = 20
 const BODY_OFFSET_X = 30
 const BODY_OFFSET_Y = 50
 const ANGLE_INIT = 30

@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import { LanguageManager } from '../i18n/LanguageManager'
 import { initYandexSDK } from '../sdk/yandexSdk'
 
 export class PreloadScene extends Phaser.Scene {
@@ -31,8 +30,8 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    initYandexSDK().catch(err => console.error('SDK init failed', err));
-    
+    initYandexSDK().catch((err) => console.error('SDK init failed', err))
+
     this.load.svg('surfboard', 'assets/surfboard.svg', {
       width: 150,
       height: 350,
@@ -67,7 +66,6 @@ export class PreloadScene extends Phaser.Scene {
 
     this.loader()
 
-    LanguageManager.init()
   }
 
   loadAudio() {

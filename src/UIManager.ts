@@ -129,7 +129,7 @@ export class UIManager {
       .setDepth(1002)
 
     const highScore = localStorage.getItem('highScore')
-    console.log('highScore UI', highScore)
+
     if (highScore) {
       this.scene.add
         .text(centerX, centerY - 20, `${i18n.t('highScore')}: ${highScore}`, {
