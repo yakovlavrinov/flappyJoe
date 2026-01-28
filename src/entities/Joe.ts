@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
-// @ts-ignore
-const SCALE = 0.6
+
 const BODY_WIDTH = 80
 const BODY_HEIGHT = 20
 const BODY_OFFSET_X = 30
 const BODY_OFFSET_Y = 50
+const GRAPHICS_DEPTH = 45
 const ANGLE_INIT = 30
 const FALL_VELOCITY = 300
 const ROTATION_SPEED = 100
@@ -20,14 +20,11 @@ export class Joe extends Phaser.Physics.Arcade.Sprite {
     if (!this.body) return
 
     this.body.setSize(BODY_WIDTH, BODY_HEIGHT)
-
     this.body.setOffset(BODY_OFFSET_X, BODY_OFFSET_Y)
 
-    this.setDepth(45)
-
+    this.setDepth(GRAPHICS_DEPTH)
     this.setAngle(ANGLE_INIT)
     this.setFlipX(true)
-
     this.setCollideWorldBounds(true)
   }
 
