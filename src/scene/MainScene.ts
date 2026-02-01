@@ -43,30 +43,28 @@ export class MainScene extends Phaser.Scene {
       this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
     ]
     this.cameras.main.setBackgroundColor('#87CEEB')
-    if (!this.anims.exists('Joe-animation')){
+    if (!this.anims.exists('Joe-animation')) {
+      this.anims.create({
+        key: 'Joe-animation',
+        frames: [{ key: 'Joe1' }, { key: 'Joe2' }, { key: 'Joe3' }, { key: 'Joe4' }],
+        frameRate: 10,
+        repeat: -1,
+      })
 
-   
-    this.anims.create({
-      key: 'Joe-animation',
-      frames: [{ key: 'Joe1' }, { key: 'Joe2' }, { key: 'Joe3' }, { key: 'Joe4' }],
-      frameRate: 10,
-      repeat: -1,
-    })
+      this.anims.create({
+        key: 'Joe-animation2',
+        frames: [{ key: 'Joe11' }, { key: 'Joe12' }, { key: 'Joe13' }, { key: 'Joe14' }],
+        frameRate: 10,
+        repeat: -1,
+      })
 
-    this.anims.create({
-      key: 'Joe-animation2',
-      frames: [{ key: 'Joe11' }, { key: 'Joe12' }, { key: 'Joe13' }, { key: 'Joe14' }],
-      frameRate: 10,
-      repeat: -1,
-    })
-
-    this.anims.create({
-      key: 'Joe-animation3',
-      frames: [{ key: 'Joe111' }, { key: 'Joe112' }, { key: 'Joe113' }, { key: 'Joe114' }],
-      frameRate: 10,
-      repeat: -1,
-    })
-     }
+      this.anims.create({
+        key: 'Joe-animation3',
+        frames: [{ key: 'Joe111' }, { key: 'Joe112' }, { key: 'Joe113' }, { key: 'Joe114' }],
+        frameRate: 10,
+        repeat: -1,
+      })
+    }
 
     this.seaSound = this.sound.add('sea', {
       volume: 1,
@@ -114,6 +112,12 @@ export class MainScene extends Phaser.Scene {
     this.ui.createTitle(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, i18n.t('title'))
     this.ui.createButton(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, () => this.startGame())
     this.ui.createScoreUI(20, 20, 0)
+
+    const ysdk = getYsdk()
+
+    if (ysdk) {
+      ysdk.features.LoadingAPI.ready()
+    }
 
     this.physics.add.collider(this.chickenJoe, this.surfboards, this.gameOver, undefined, this)
 

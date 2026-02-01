@@ -1,3 +1,17 @@
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+canvas {
+  outline: none;
+  touch-action: none;
+}
+
 body {
   margin: 0;
   background:
@@ -7,4 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+
+  overflow: hidden;
+  touch-action: none;
 }
