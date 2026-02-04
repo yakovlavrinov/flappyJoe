@@ -13,19 +13,16 @@ export class LanguageManager {
 
   static setLanguage(lang: Lang) {
     this.current = lang
-    localStorage.setItem('lang', lang)
   }
 
   static init() {
-    const saved = localStorage.getItem('lang') as Lang | null
-    if (saved && this.dict[saved]) {
-      this.current = saved
-    }
+    const ysdk = getYsdk()
+
+    this.current = ysdk?.environment?.i18n?.lang as Lang
   }
 
   static t(key: keyof typeof ru): string {
-    const ysdk = getYsdk()
-    return this.dict[(ysdk?.environment.i18n.lang as Lang) || this.current][key] ?? key
+    return this.dict[this.current || 'ru'][key]
   }
 
   static getLanguage() {

@@ -33,6 +33,13 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
+    i18n.init()
+    
+
+    
+    console.log(getYsdk()?.environment?.i18n?.lang)
+    console.log(i18n.getLanguage())
+
     this.startKeys = [
       this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
       this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
@@ -73,7 +80,6 @@ export class MainScene extends Phaser.Scene {
       loop: true,
       delay: 0,
     })
-    this.seaSound.play()
 
     this.cloudManager = new CloudManager(this)
     this.cloudManager.spawnInitial(5)
@@ -195,6 +201,7 @@ export class MainScene extends Phaser.Scene {
     this.ui.hideGameOverUI()
     this.ui.hideMenu()
     this.isPause = false
+    this.seaSound.play()
     this.sound.play('start')
 
     if (ysdk) {
@@ -306,8 +313,11 @@ export class MainScene extends Phaser.Scene {
       const that = this
       ysdk.adv.showFullscreenAdv({
         callbacks: {
-          onOpen: function () {},
+          onOpen: function () {
+            that.sound.pauseAll()
+          },
           onClose: function () {
+            that.sound.resumeAll()
             that.sound.play('restart')
             that.scene.restart()
           },
