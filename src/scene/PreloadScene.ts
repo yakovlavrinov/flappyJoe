@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
-import { initYandexSDK } from '../sdk/yandexSdk'
+import { getYsdk, initYandexSDK } from '../sdk/yandexSdk'
+import { LanguageManager as i18n } from '../i18n/LanguageManager'
 
 export class PreloadScene extends Phaser.Scene {
   private progressBar!: Phaser.GameObjects.Graphics
@@ -30,8 +31,6 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    initYandexSDK().catch((err) => console.error('SDK init failed', err))
-
     this.load.svg('surfboard', 'assets/surfboard.svg', {
       width: 150,
       height: 350,
@@ -65,7 +64,22 @@ export class PreloadScene extends Phaser.Scene {
     this.loadAudio()
 
     this.loader()
+  }
 
+  async create() {
+    // ⏳ ЖДЁМ SDK
+    try {
+      await initYandexSDK()
+    } catch (e) {
+      console.error('Yandex SDK init failed', e)
+    }
+
+    i18n.init()
+    const ysdk = getYsdk()
+
+    if (ysdk?.environment?.i18n?.lang) {
+      this.scene.start('MainScene')
+    }
   }
 
   loadAudio() {
@@ -144,8 +158,8 @@ export class PreloadScene extends Phaser.Scene {
       this.assetText.setText('Загружается: ' + file.key)
     })
 
-    this.load.on('complete', () => {
-      this.scene.start('MainScene')
-    })
+    // this.load.on('complete', () => {
+    //   this.scene.start('MainScene')
+    // })
   }
 }

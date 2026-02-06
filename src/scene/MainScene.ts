@@ -33,13 +33,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    i18n.init()
-    
-
-    
-    console.log(getYsdk()?.environment?.i18n?.lang)
-    console.log(i18n.getLanguage())
-
     this.startKeys = [
       this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
       this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
